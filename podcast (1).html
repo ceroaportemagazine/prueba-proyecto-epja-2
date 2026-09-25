@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podcast — Cero Aporte Mag</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO PODCAST ---- */
+    .page-hero {
+      min-height: 52vh;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-noise {
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+    .hero-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--red);
+    }
+    .page-hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+    .page-rubric {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .page-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--white);
+      max-width: 20ch;
+      margin-bottom: 1rem;
+    }
+    .page-deck {
+      font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+      color: rgba(255,255,255,0.65);
+      max-width: 55ch;
+      line-height: 1.65;
+    }
+
+    /* ---- BODY ---- */
+    .page-body {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 5rem clamp(1.5rem, 5vw, 3rem) 3rem;
+    }
+    .coming-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red-dim);
+      border: 1px solid rgba(255,63,32,0.3);
+      color: var(--red);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+    .coming-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ---- PLAYER PLACEHOLDER ---- */
+    .podcast-intro {
+      max-width: 65ch;
+      margin-bottom: 4rem;
+    }
+    .podcast-intro h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--black);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+    .podcast-intro p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #4a4a4a;
+    }
+
+    .player-placeholder {
+      background: var(--black);
+      border-radius: 4px;
+      padding: 3rem 2.5rem;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .player-cover {
+      width: 100px;
+      height: 100px;
+      background: rgba(255,63,32,0.15);
+      border: 2px dashed rgba(255,63,32,0.3);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+    .player-info { flex: 1; }
+    .player-episode {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+    .player-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .player-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .player-btn {
+      width: 40px; height: 40px;
+      background: var(--red);
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: not-allowed;
+      opacity: 0.4;
+      font-size: 1rem;
+      color: var(--white);
+    }
+    .player-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+    }
+    .player-time {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ---- EPISODE LIST PLACEHOLDER ---- */
+    .episode-list { margin-bottom: 3rem; }
+    .episode-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .episode-num {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: rgba(178,178,178,0.3);
+      width: 2rem;
+      flex-shrink: 0;
+    }
+    .episode-info { flex: 1; }
+    .episode-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.3rem;
+    }
+    .episode-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--greige);
+      opacity: 0.6;
+    }
+    .episode-dur {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--greige);
+      opacity: 0.4;
+    }
+
+    /* ---- BLOCK PLACEHOLDER ---- */
+    .block-placeholder {
+      border: 2px dashed rgba(178,178,178,0.3);
+      border-radius: 4px;
+      padding: 5rem 2rem;
+      text-align: center;
+      background: rgba(255,255,255,0.4);
+      margin-bottom: 3rem;
+    }
+    .block-placeholder-icon {
+      font-size: 3.5rem;
+      opacity: 0.3;
+      margin-bottom: 1.5rem;
+    }
+    .block-placeholder-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+    }
+    .block-placeholder-desc {
+      font-size: 0.88rem;
+      color: var(--greige);
+      max-width: 40ch;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .player-placeholder { flex-direction: column; align-items: flex-start; }
+      .player-cover { width: 70px; height: 70px; font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVEGACIÓN -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Cero Aporte<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="reportaje-epja.html">EPJA</a></li>
+    <li><a href="testimonios.html">Testimonios</a></li>
+    <li><a href="datos.html">Datos</a></li>
+    <li><a href="podcast.html">Podcast</a></li>
+    <li><a href="index.html#sobre">Sobre el Mag</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="hero-noise"></div>
+  <div class="hero-accent"></div>
+  <div class="page-hero-inner">
+    <p class="page-rubric">Podcast · Entrevistas en profundidad</p>
+    <h1 class="page-headline">La voz del reportaje</h1>
+    <p class="page-deck">
+      Conversaciones con los protagonistas, expertos y voces que rodean la crisis de la educación de adultos en Chile. Próximamente.
+    </p>
+  </div>
+</section>
+
+<!-- CUERPO -->
+<div class="page-body">
+
+  <span class="coming-badge">Próximamente</span>
+
+  <div class="podcast-intro">
+    <h2>Una entrevista a fondo sobre lo que el reportaje no cabe en el texto</h2>
+    <p>
+      Este espacio recogerá una o más entrevistas en formato podcast con los actores clave del sistema EPJA: directivos, docentes, estudiantes, investigadores o representantes del Estado. El tema de la primera entrega aún está en definición.
+    </p>
+  </div>
+
+  <!-- PLAYER PLACEHOLDER -->
+  <div class="player-placeholder reveal">
+    <div class="player-cover">🎙️</div>
+    <div class="player-info">
+      <p class="player-episode">Episodio 01 · Por confirmar</p>
+      <p class="player-title">Entrevista en elaboración</p>
+      <p class="player-desc">El contenido de este episodio aún no está definido. Aquí aparecerá el título, descripción y el reproductor de audio cuando el episodio esté disponible.</p>
+      <div class="player-controls">
+        <button class="player-btn" disabled title="No disponible aún">▶</button>
+        <div class="player-bar"></div>
+        <span class="player-time">--:--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EPISODE LIST PLACEHOLDER -->
+  <h2 class="section-title" style="font-size:1.4rem;margin-bottom:1.5rem;">Episodios</h2>
+  <div class="episode-list">
+    <div class="episode-item reveal">
+      <span class="episode-num">01</span>
+      <div class="episode-info">
+        <p class="episode-tag">Próximamente</p>
+        <p class="episode-title">Primer episodio — título por confirmar</p>
+      </div>
+      <span class="episode-dur">--:--</span>
+    </div>
+    <div class="episode-item reveal">
+      <span class="episode-num">02</span>
+      <div class="episode-info">
+        <p class="episode-tag">Por venir</p>
+        <p class="episode-title">Segundo episodio — título por confirmar</p>
+      </div>
+      <span class="episode-dur">--:--</span>
+    </div>
+    <div class="episode-item reveal">
+      <span class="episode-num">03</span>
+      <div class="episode-info">
+        <p class="episode-tag">Por venir</p>
+        <p class="episode-title">Tercer episodio — título por confirmar</p>
+      </div>
+      <span class="episode-dur">--:--</span>
+    </div>
+  </div>
+
+  <!-- BLOQUE PLACEHOLDER -->
+  <div class="block-placeholder reveal">
+    <div class="block-placeholder-icon">🎧</div>
+    <p class="block-placeholder-title">Reproductor y transcripción</p>
+    <p class="block-placeholder-desc">Cuando el podcast esté listo, aquí aparecerán el reproductor completo, la transcripción del episodio y notas del programa.</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Cero Aporte<span>.</span></div>
+      <p class="footer-copy">© 2026 Cero Aporte Mag · Escuela de Periodismo, UAC · Todos los derechos reservados</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="reportaje-epja.html">EPJA</a>
+      <a href="testimonios.html">Testimonios</a>
+      <a href="datos.html">Datos</a>
+      <a href="podcast.html">Podcast</a>
+      <a href="index.html#sobre">Sobre</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
